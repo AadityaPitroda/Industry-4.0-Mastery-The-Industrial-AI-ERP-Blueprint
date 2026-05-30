@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Industry 4.0 Mastery — Course Documentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg:        #060b18;
+    --surface:   #0d1628;
+    --card:      #111d35;
+    --border:    rgba(0,212,255,0.15);
+    --electric:  #00d4ff;
+    --orange:    #ff6b35;
+    --green:     #00ffa3;
+    --yellow:    #ffd166;
+    --purple:    #b388ff;
+    --text:      #e2e8f4;
+    --muted:     #8a9bbf;
+    --gradient:  linear-gradient(135deg,#00d4ff 0%,#0072ff 100%);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    font-family:'DM Sans',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    overflow-x:hidden;
+  }
+
+  /* ── Noise texture overlay ─────────────────────────── */
+  body::before{
+    content:'';position:fixed;inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+    pointer-events:none;z-index:0;opacity:.4;
+  }
+
+  /* ── HEADER / HERO ─────────────────────────────────── */
+  .hero{
+    position:relative;
+    padding:80px 0 60px;
+    overflow:hidden;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% -10%,rgba(0,212,255,.12) 0%,transparent 70%),
+      var(--bg);
+  }
+  .hero-grid{
+    position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(0,212,255,.04) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(0,212,255,.04) 1px,transparent 1px);
+    background-size:40px 40px;
+    animation:gridPan 20s linear infinite;
+  }
+  @keyframes gridPan{from{background-position:0 0;}to{background-position:40px 40px;}}
+
+  .hero-inner{position:relative;z-index:1;text-align:center;max-width:900px;margin:0 auto;padding:0 24px;}
+
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;
+    background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);
+    border-radius:999px;padding:6px 18px;
+    font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--electric);
+    letter-spacing:.1em;text-transform:uppercase;margin-bottom:24px;
+    animation:fadeUp .6s ease both;
+  }
+  .badge .dot{width:7px;height:7px;border-radius:50%;background:var(--electric);
+    animation:pulse 1.6s ease infinite;}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.6);}}
+
+  h1.hero-title{
+    font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3.6rem);font-weight:800;
+    line-height:1.1;letter-spacing:-.03em;
+    background:linear-gradient(135deg,#ffffff 0%,#c8e6ff 40%,var(--electric) 100%);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    animation:fadeUp .7s .1s ease both;
+  }
+  .hero-sub{
+    font-size:1.1rem;color:var(--muted);max-width:680px;margin:20px auto 36px;
+    animation:fadeUp .7s .2s ease both;
+  }
+  .hero-stats{
+    display:flex;justify-content:center;gap:40px;flex-wrap:wrap;
+    animation:fadeUp .7s .3s ease both;
+  }
+  .stat{text-align:center;}
+  .stat .num{
+    font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;
+    background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    background-clip:text;
+  }
+  .stat .lbl{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+  /* ── NAV ────────────────────────────────────────────── */
+  .toc{
+    background:var(--surface);border-bottom:1px solid var(--border);
+    position:sticky;top:0;z-index:100;
+    overflow-x:auto;white-space:nowrap;
+  }
+  .toc-inner{
+    max-width:1100px;margin:0 auto;padding:0 24px;
+    display:flex;gap:0;
+  }
+  .toc a{
+    display:inline-block;padding:14px 18px;
+    font-size:.8rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--muted);text-decoration:none;border-bottom:2px solid transparent;
+    transition:color .2s,border-color .2s;
+  }
+  .toc a:hover{color:var(--electric);border-bottom-color:var(--electric);}
+
+  /* ── LAYOUT ─────────────────────────────────────────── */
+  .wrapper{max-width:1100px;margin:0 auto;padding:0 24px;}
+  .section{padding:72px 0;}
+  .section-label{
+    font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--electric);
+    letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px;
+  }
+  h2.section-title{
+    font-family:'Syne',sans-serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;
+    color:#fff;line-height:1.2;margin-bottom:16px;
+  }
+  h2.section-title span{color:var(--electric);}
+  .section-desc{color:var(--muted);font-size:1.05rem;max-width:700px;margin-bottom:48px;}
+
+  /* ── OBJECTIVES ─────────────────────────────────────── */
+  .obj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;}
+  .obj-card{
+    background:var(--card);border:1px solid var(--border);border-radius:12px;
+    padding:24px;display:flex;gap:16px;align-items:flex-start;
+    transition:transform .2s,border-color .2s;
+  }
+  .obj-card:hover{transform:translateY(-3px);border-color:var(--electric);}
+  .obj-num{
+    font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;
+    background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    background-clip:text;min-width:40px;line-height:1;
+  }
+  .obj-text{font-size:.9rem;color:var(--muted);}
+
+  /* ── 5-LAYER ARCHITECTURE DIAGRAM ───────────────────── */
+  .arch-container{
+    background:var(--card);border:1px solid var(--border);border-radius:16px;
+    padding:40px;overflow-x:auto;
+  }
+  .arch-svg{width:100%;max-width:860px;display:block;margin:0 auto;}
+
+  /* ── WEEKLY TIMELINE ────────────────────────────────── */
+  .timeline{position:relative;padding-left:32px;}
+  .timeline::before{
+    content:'';position:absolute;left:8px;top:0;bottom:0;
+    width:2px;
+    background:linear-gradient(to bottom,var(--electric),var(--purple),var(--orange));
+  }
+  .week-block{position:relative;margin-bottom:36px;}
+  .week-block::before{
+    content:'';position:absolute;left:-28px;top:18px;
+    width:12px;height:12px;border-radius:50%;
+    background:var(--electric);
+    box-shadow:0 0 12px var(--electric);
+  }
+  .week-block:nth-child(3n+2)::before{background:var(--purple);box-shadow:0 0 12px var(--purple);}
+  .week-block:nth-child(3n+3)::before{background:var(--orange);box-shadow:0 0 12px var(--orange);}
+
+  .week-card{
+    background:var(--card);border:1px solid var(--border);border-radius:12px;
+    padding:24px 28px;transition:border-color .2s,transform .2s;
+  }
+  .week-card:hover{border-color:rgba(0,212,255,.4);transform:translateX(4px);}
+  .week-header{display:flex;align-items:center;gap:16px;margin-bottom:14px;flex-wrap:wrap;}
+  .week-tag{
+    font-family:'JetBrains Mono',monospace;font-size:.7rem;
+    background:rgba(0,212,255,.12);color:var(--electric);
+    border:1px solid rgba(0,212,255,.2);border-radius:6px;
+    padding:3px 10px;letter-spacing:.08em;
+  }
+  .week-title{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;color:#fff;}
+  .week-topic{
+    font-size:.82rem;font-weight:600;color:var(--orange);
+    text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;
+  }
+  .week-concepts{
+    display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;
+  }
+  .concept{
+    font-size:.78rem;background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);border-radius:6px;
+    padding:3px 10px;color:var(--muted);
+  }
+  .week-activity,.week-assign{
+    font-size:.88rem;padding:10px 14px;border-radius:8px;margin-top:8px;
+  }
+  .week-activity{background:rgba(0,255,163,.06);border-left:3px solid var(--green);color:#b2ffd8;}
+  .week-assign{background:rgba(255,107,53,.07);border-left:3px solid var(--orange);color:#ffd0b8;}
+  .week-activity strong,.week-assign strong{display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px;}
+
+  /* ── FLOW CHART ─────────────────────────────────────── */
+  .flow-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:40px;overflow-x:auto;}
+  .flow-svg{width:100%;max-width:900px;display:block;margin:0 auto;}
+
+  /* ── PHASE ROADMAP ───────────────────────────────────── */
+  .phases{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;}
+  .phase{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;
+    padding:28px;position:relative;overflow:hidden;
+  }
+  .phase::after{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(circle at 0% 0%,rgba(0,212,255,.07),transparent 60%);
+    pointer-events:none;
+  }
+  .phase:nth-child(2)::after{background:radial-gradient(circle at 0% 0%,rgba(179,136,255,.07),transparent 60%);}
+  .phase:nth-child(3)::after{background:radial-gradient(circle at 0% 0%,rgba(255,107,53,.07),transparent 60%);}
+  .phase-label{
+    font-family:'JetBrains Mono',monospace;font-size:.7rem;
+    color:var(--electric);letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px;
+  }
+  .phase:nth-child(2) .phase-label{color:var(--purple);}
+  .phase:nth-child(3) .phase-label{color:var(--orange);}
+  .phase h3{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:12px;}
+  .phase ul{list-style:none;padding:0;}
+  .phase ul li{
+    padding:5px 0;font-size:.88rem;color:var(--muted);
+    border-bottom:1px solid rgba(255,255,255,.05);
+    display:flex;align-items:flex-start;gap:8px;
+  }
+  .phase ul li::before{content:'→';color:var(--electric);font-weight:700;flex-shrink:0;}
+  .phase:nth-child(2) ul li::before{color:var(--purple);}
+  .phase:nth-child(3) ul li::before{color:var(--orange);}
+
+  /* ── DELIVERABLES ────────────────────────────────────── */
+  .deliverables{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;}
+  .dlv{
+    background:var(--card);border:1px solid var(--border);border-radius:12px;
+    padding:24px;display:flex;align-items:flex-start;gap:16px;
+  }
+  .dlv-icon{font-size:2rem;line-height:1;}
+  .dlv-num{
+    font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;
+    color:var(--electric);margin-bottom:4px;
+  }
+  .dlv h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;color:#fff;margin-bottom:6px;}
+  .dlv p{font-size:.85rem;color:var(--muted);}
+
+  /* ── IMPACT SECTION ─────────────────────────────────── */
+  .impact-section{
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 100%,rgba(0,212,255,.1) 0%,transparent 70%),
+      var(--surface);
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+  }
+  .before-after{
+    display:grid;grid-template-columns:1fr auto 1fr;gap:0;
+    background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;
+    margin-bottom:48px;
+  }
+  .ba-col{padding:32px;}
+  .ba-col.before{background:rgba(255,60,60,.04);}
+  .ba-col.after{background:rgba(0,255,163,.04);}
+  .ba-divider{
+    width:2px;
+    background:linear-gradient(to bottom,transparent,var(--electric),transparent);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .ba-vs{
+    background:var(--electric);color:#000;
+    font-family:'Syne',sans-serif;font-weight:800;font-size:.75rem;
+    padding:8px 4px;letter-spacing:.1em;writing-mode:vertical-rl;
+    text-transform:uppercase;
+  }
+  .ba-label{
+    font-family:'JetBrains Mono',monospace;font-size:.72rem;
+    letter-spacing:.15em;text-transform:uppercase;margin-bottom:16px;
+  }
+  .before .ba-label{color:#ff6b6b;}
+  .after .ba-label{color:var(--green);}
+  .ba-col h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:16px;}
+  .ba-item{
+    display:flex;align-items:flex-start;gap:10px;
+    padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);
+    font-size:.88rem;color:var(--muted);
+  }
+  .ba-item .icon{flex-shrink:0;font-size:1rem;}
+  @media(max-width:680px){
+    .before-after{grid-template-columns:1fr;grid-template-rows:1fr auto 1fr;}
+    .ba-divider{width:100%;height:2px;flex-direction:row;}
+    .ba-vs{writing-mode:horizontal-tb;padding:4px 8px;}
+  }
+
+  /* ── METRICS CHART ───────────────────────────────────── */
+  .metrics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;margin-bottom:48px;}
+  .metric-card{
+    background:var(--card);border:1px solid var(--border);border-radius:12px;
+    padding:24px;text-align:center;
+  }
+  .metric-val{
+    font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;
+    background:linear-gradient(135deg,var(--green),var(--electric));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    margin-bottom:4px;
+  }
+  .metric-label{font-size:.82rem;color:var(--muted);}
+
+  /* ── BAR CHART ───────────────────────────────────────── */
+  .chart-wrap{
+    background:var(--card);border:1px solid var(--border);border-radius:16px;
+    padding:36px;overflow-x:auto;
+  }
+  .chart-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:#fff;margin-bottom:24px;}
+  .bar-chart{display:flex;align-items:flex-end;gap:16px;height:200px;padding-bottom:40px;position:relative;}
+  .bar-chart::after{
+    content:'';position:absolute;bottom:40px;left:0;right:0;
+    height:1px;background:rgba(255,255,255,.08);
+  }
+  .bar-group{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1;min-width:60px;}
+  .bar-pair{display:flex;gap:4px;align-items:flex-end;height:160px;}
+  .bar{border-radius:6px 6px 0 0;width:28px;transition:opacity .2s;position:relative;}
+  .bar.old{background:rgba(255,80,80,.6);}
+  .bar.new{background:linear-gradient(180deg,var(--electric),rgba(0,212,255,.4));}
+  .bar-lbl{font-size:.72rem;color:var(--muted);text-align:center;margin-top:8px;}
+  .legend{display:flex;gap:20px;margin-bottom:16px;flex-wrap:wrap;}
+  .leg-item{display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--muted);}
+  .leg-dot{width:14px;height:14px;border-radius:3px;flex-shrink:0;}
+
+  /* ── FOOTER ─────────────────────────────────────────── */
+  .footer{
+    text-align:center;padding:48px 24px;
+    border-top:1px solid var(--border);
+    font-size:.85rem;color:var(--muted);
+  }
+  .footer strong{color:var(--electric);}
+
+  /* ── SCROLLBAR ───────────────────────────────────────── */
+  ::-webkit-scrollbar{width:6px;height:6px;}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:rgba(0,212,255,.3);border-radius:3px;}
+
+  /* ── DIVIDER ─────────────────────────────────────────── */
+  .hr{height:1px;background:linear-gradient(to right,transparent,var(--border),transparent);margin:0;}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ HERO ══════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="badge"><span class="dot"></span>Official Course Documentation</div>
+    <h1 class="hero-title">Industry 4.0 Mastery:<br/>The Industrial AI &amp; ERP Blueprint</h1>
+    <p class="hero-sub">
+      A 15-week hands-on training course that transforms how you think about manufacturing — 
+      from paper logs and siloed spreadsheets to unified, AI-powered digital enterprises.
+    </p>
+    <div class="hero-stats">
+      <div class="stat"><div class="num">15</div><div class="lbl">Weeks</div></div>
+      <div class="stat"><div class="num">5</div><div class="lbl">Architecture Layers</div></div>
+      <div class="stat"><div class="num">7</div><div class="lbl">Core Objectives</div></div>
+      <div class="stat"><div class="num">5</div><div class="lbl">Final Deliverables</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ NAV ═══════════════════════════════════ -->
+<nav class="toc">
+  <div class="toc-inner">
+    <a href="#about">About</a>
+    <a href="#objectives">Objectives</a>
+    <a href="#architecture">5-Layer Architecture</a>
+    <a href="#curriculum">15-Week Curriculum</a>
+    <a href="#roadmap">Implementation Roadmap</a>
+    <a href="#final-project">Final Project</a>
+    <a href="#deliverables">Deliverables</a>
+    <a href="#impact">Impact</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════ ABOUT ════════════════════════════════ -->
+<section class="section" id="about">
+  <div class="wrapper">
+    <div class="section-label">01 — Course Overview</div>
+    <h2 class="section-title">What is this <span>Course</span> About?</h2>
+    <p class="section-desc">
+      This course is designed for students and professionals who aspire to become 
+      <strong style="color:#fff">Business Analysts, System Architects, or Project Managers</strong>.
+      You will learn to design, plan, and implement a complete digital transformation for a 
+      traditional manufacturing business — replacing manual paper logs and siloed spreadsheets 
+      with a unified, AI-powered system.
+    </p>
+    <div class="obj-grid">
+      <div class="obj-card" style="border-color:rgba(0,212,255,.25)">
+        <span style="font-size:2rem">🏭</span>
+        <p class="obj-text">Learn to replace manual, paper-based systems with integrated digital platforms for real-time decision making.</p>
+      </div>
+      <div class="obj-card" style="border-color:rgba(179,136,255,.25)">
+        <span style="font-size:2rem">🤖</span>
+        <p class="obj-text">Evaluate and apply AI models such as Predictive Maintenance and Vision Quality Control to industrial use cases.</p>
+      </div>
+      <div class="obj-card" style="border-color:rgba(255,107,53,.25)">
+        <span style="font-size:2rem">📐</span>
+        <p class="obj-text">Architect secure enterprise platforms using open-source technology stacks and relational database models.</p>
+      </div>
+      <div class="obj-card" style="border-color:rgba(0,255,163,.25)">
+        <span style="font-size:2rem">📊</span>
+        <p class="obj-text">Build compelling ROI cases, estimate costs, and formulate phased implementation roadmaps with payback projections.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="hr"></div>
+
+<!-- ═══════════════════════════════ OBJECTIVES ════════════════════════════ -->
+<section class="section" id="objectives">
+  <div class="wrapper">
+    <div class="section-label">02 — Learning Goals</div>
+    <h2 class="section-title">7 <span>Course Objectives</span></h2>
+    <p class="section-desc">By the end of this course, you will be fully equipped with these seven critical competencies.</p>
+    <div class="obj-grid">
+      <div class="obj-card">
+        <div class="obj-num">01</div>
+        <p class="obj-text">Analyze legacy business processes and identify operational bottlenecks, data silos, and areas for digital transformation.</p>
+      </div>
+      <div class="obj-card">
+        <div class="obj-num">02</div>
+        <p class="obj-text">Design a 5-layer enterprise system architecture bridging physical factory floors to cloud analytics.</p>
+      </div>
+      <div class="obj-card">
+        <div class="obj-num">03</div>
+        <p class="obj-text">Define the functional requirements for core ERP and MES (Manufacturing Execution System) modules.</p>
+      </div>
+      <div class="obj-card">
+        <div class="obj-num">04</div>
+        <p class="obj-text">Evaluate and apply appropriate AI models (e.g., Predictive Maintenance, Quality Vision) to industrial use cases to generate ROI.</p>
+      </div>
+      <div class="obj-card">
+        <div class="obj-num">05</div>
+        <p class="obj-text">Architect a secure, open-source technology stack and relational database models for enterprise systems.</p>
+      </div>
+      <div class="obj-card">
+        <div class="obj-num">06</div>
+        <p class="obj-text">Formulate a 3-phase implementation roadmap (Pilot, Scale, Optimize) with accurate cost, effort, and ROI projections.</p>
+      </div>
+      <div class="obj-card">
+        <div class="obj-num">07</div>
+        <p class="obj-text">Identify and mitigate project risks, emphasizing the critical success factor that "people and processes matter more than software".</p>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="hr"></div>
+
+<!-- ═══════════════════════════════ 5-LAYER ARCHITECTURE ═════════════════ -->
+<section class="section" id="architecture">
+  <div class="wrapper">
+    <div class="section-label">03 — Core Framework</div>
+    <h2 class="section-title">The <span>5-Layer System</span> Architecture</h2>
+    <p class="section-desc">
+      Every concept in this course anchors to this architecture. It describes how data travels
+      from a physical machine sensor all the way up to an AI-powered executive dashboard.
+      Understanding this stack is the backbone of the entire programme.
+    </p>
+    <div class="arch-container">
+      <svg class="arch-svg" viewBox="0 0 820 540" xmlns="http://www.w3.org/2000/svg" font-family="'DM Sans',sans-serif">
+        <defs>
+          <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#ff6b35" stop-opacity=".25"/>
+            <stop offset="100%" stop-color="#ff6b35" stop-opacity=".08"/>
+          </linearGradient>
+          <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#ffd166" stop-opacity=".25"/>
+            <stop offset="100%" stop-color="#ffd166" stop-opacity=".08"/>
+          </linearGradient>
+          <linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#00ffa3" stop-opacity=".25"/>
+            <stop offset="100%" stop-color="#00ffa3" stop-opacity=".08"/>
+          </linearGradient>
+          <linearGradient id="g4" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#b388ff" stop-opacity=".25"/>
+            <stop offset="100%" stop-color="#b388ff" stop-opacity=".08"/>
+          </linearGradient>
+          <linearGradient id="g5" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#00d4ff" stop-opacity=".3"/>
+            <stop offset="100%" stop-color="#00d4ff" stop-opacity=".1"/>
+          </linearGradient>
+          <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#00d4ff" opacity=".6"/>
+          </marker>
+        </defs>
+
+        <!-- Layer 1 - Physical -->
+        <rect x="20" y="450" width="780" height="72" rx="10" fill="url(#g1)" stroke="#ff6b35" stroke-width="1" stroke-opacity=".4"/>
+        <text x="38" y="472" fill="#ff6b35" font-size="9" font-family="'JetBrains Mono',monospace" letter-spacing="2" opacity=".8">LAYER 1</text>
+        <text x="38" y="492" fill="#ff8c5a" font-size="15" font-weight="700">Physical Layer</text>
+        <text x="38" y="510" fill="#ffc4a0" font-size="11" opacity=".7">Machines · Sensors · PLCs · Actuators · RFID Scanners · Barcode Readers</text>
+        <text x="720" y="488" fill="#ff6b35" font-size="28" text-anchor="middle">🏭</text>
+
+        <!-- Layer 2 - Data -->
+        <rect x="20" y="368" width="780" height="72" rx="10" fill="url(#g2)" stroke="#ffd166" stroke-width="1" stroke-opacity=".4"/>
+        <text x="38" y="390" fill="#ffd166" font-size="9" font-family="'JetBrains Mono',monospace" letter-spacing="2" opacity=".8">LAYER 2</text>
+        <text x="38" y="410" fill="#ffe187" font-size="15" font-weight="700">Data Layer</text>
+        <text x="38" y="428" fill="#ffedb8" font-size="11" opacity=".7">Edge Gateways · MQTT / OPC-UA · InfluxDB (Time-Series) · PostgreSQL (Relational) · Data Lake</text>
+        <text x="720" y="406" fill="#ffd166" font-size="28" text-anchor="middle">🗄️</text>
+
+        <!-- Arrow 1→2 -->
+        <line x1="410" y1="448" x2="410" y2="441" stroke="#ffd166" stroke-width="1.5" stroke-opacity=".5" marker-end="url(#arrow)"/>
+
+        <!-- Layer 3 - Integration -->
+        <rect x="20" y="286" width="780" height="72" rx="10" fill="url(#g3)" stroke="#00ffa3" stroke-width="1" stroke-opacity=".4"/>
+        <text x="38" y="308" fill="#00ffa3" font-size="9" font-family="'JetBrains Mono',monospace" letter-spacing="2" opacity=".8">LAYER 3</text>
+        <text x="38" y="328" fill="#80ffcc" font-size="15" font-weight="700">Integration Layer</text>
+        <text x="38" y="346" fill="#b2ffe0" font-size="11" opacity=".7">REST APIs · Message Brokers · Event Bus · Middleware · Protocol Converters · ETL Pipelines</text>
+        <text x="720" y="324" fill="#00ffa3" font-size="28" text-anchor="middle">🔗</text>
+
+        <!-- Arrow 2→3 -->
+        <line x1="410" y1="366" x2="410" y2="359" stroke="#00ffa3" stroke-width="1.5" stroke-opacity=".5" marker-end="url(#arrow)"/>
+
+        <!-- Layer 4 - Business Logic -->
+        <rect x="20" y="204" width="780" height="72" rx="10" fill="url(#g4)" stroke="#b388ff" stroke-width="1" stroke-opacity=".4"/>
+        <text x="38" y="226" fill="#b388ff" font-size="9" font-family="'JetBrains Mono',monospace" letter-spacing="2" opacity=".8">LAYER 4</text>
+        <text x="38" y="246" fill="#d0aaff" font-size="15" font-weight="700">Business Logic Layer</text>
+        <text x="38" y="264" fill="#e8d0ff" font-size="11" opacity=".7">ERP Core · MES (Manufacturing Execution) · HR &amp; Payroll · Finance &amp; GL · CRM · Supply Chain</text>
+        <text x="720" y="242" fill="#b388ff" font-size="28" text-anchor="middle">⚙️</text>
+
+        <!-- Arrow 3→4 -->
+        <line x1="410" y1="284" x2="410" y2="277" stroke="#b388ff" stroke-width="1.5" stroke-opacity=".5" marker-end="url(#arrow)"/>
+
+        <!-- Layer 5 - AI & Analytics -->
+        <rect x="20" y="30" width="780" height="164" rx="10" fill="url(#g5)" stroke="#00d4ff" stroke-width="1.5" stroke-opacity=".6"/>
+        <text x="38" y="56" fill="#00d4ff" font-size="9" font-family="'JetBrains Mono',monospace" letter-spacing="2" opacity=".9">LAYER 5 — HIGHEST</text>
+        <text x="38" y="80" fill="#66e5ff" font-size="17" font-weight="700">AI &amp; Analytics Layer</text>
+
+        <!-- AI sub-boxes -->
+        <rect x="38" y="94" width="160" height="80" rx="7" fill="rgba(0,212,255,.1)" stroke="rgba(0,212,255,.3)" stroke-width="1"/>
+        <text x="118" y="120" fill="#00d4ff" font-size="11" font-weight="600" text-anchor="middle">Predictive</text>
+        <text x="118" y="134" fill="#00d4ff" font-size="11" font-weight="600" text-anchor="middle">Maintenance</text>
+        <text x="118" y="152" fill="#8ed6e8" font-size="9.5" text-anchor="middle" opacity=".7">LSTM · XGBoost</text>
+        <text x="118" y="164" fill="#8ed6e8" font-size="9.5" text-anchor="middle" opacity=".7">Failure Prediction</text>
+
+        <rect x="214" y="94" width="160" height="80" rx="7" fill="rgba(0,255,163,.1)" stroke="rgba(0,255,163,.3)" stroke-width="1"/>
+        <text x="294" y="120" fill="#00ffa3" font-size="11" font-weight="600" text-anchor="middle">Vision AI</text>
+        <text x="294" y="134" fill="#00ffa3" font-size="11" font-weight="600" text-anchor="middle">Quality Control</text>
+        <text x="294" y="152" fill="#8ed9c0" font-size="9.5" text-anchor="middle" opacity=".7">YOLOv8 · ResNet</text>
+        <text x="294" y="164" fill="#8ed9c0" font-size="9.5" text-anchor="middle" opacity=".7">95%+ Accuracy</text>
+
+        <rect x="390" y="94" width="160" height="80" rx="7" fill="rgba(255,209,102,.1)" stroke="rgba(255,209,102,.3)" stroke-width="1"/>
+        <text x="470" y="120" fill="#ffd166" font-size="11" font-weight="600" text-anchor="middle">Demand</text>
+        <text x="470" y="134" fill="#ffd166" font-size="11" font-weight="600" text-anchor="middle">Forecasting</text>
+        <text x="470" y="152" fill="#d9bf8e" font-size="9.5" text-anchor="middle" opacity=".7">Time-Series ML</text>
+        <text x="470" y="164" fill="#d9bf8e" font-size="9.5" text-anchor="middle" opacity=".7">Inventory Optimisation</text>
+
+        <rect x="566" y="94" width="208" height="80" rx="7" fill="rgba(255,107,53,.1)" stroke="rgba(255,107,53,.3)" stroke-width="1"/>
+        <text x="670" y="120" fill="#ff6b35" font-size="11" font-weight="600" text-anchor="middle">RPA Bots &amp;</text>
+        <text x="670" y="134" fill="#ff6b35" font-size="11" font-weight="600" text-anchor="middle">BI Dashboards</text>
+        <text x="670" y="152" fill="#d99e8e" font-size="9.5" text-anchor="middle" opacity=".7">Reinforcement Learning</text>
+        <text x="670" y="164" fill="#d99e8e" font-size="9.5" text-anchor="middle" opacity=".7">Admin Automation</text>
+
+        <!-- Arrow 4→5 -->
+        <line x1="410" y1="202" x2="410" y2="195" stroke="#00d4ff" stroke-width="1.5" stroke-opacity=".5" marker-end="url(#arrow)"/>
+
+        <!-- Left label "DATA FLOWS UP →" -->
+        <text x="12" y="310" fill="#8a9bbf" font-size="9" font-family="'JetBrains Mono',monospace" transform="rotate(-90,12,310)" opacity=".5" text-anchor="middle">DATA FLOWS UP</text>
+      </svg>
+    </div>
+  </div>
+</section>
+<div class="hr"></div>
+
+<!-- ═══════════════════════════════ CURRICULUM ════════════════════════════ -->
+<section class="section" id="curriculum">
+  <div class="wrapper">
+    <div class="section-label">04 — Course Outline</div>
+    <h2 class="section-title">15-Week <span>Curriculum</span> Map</h2>
+    <p class="section-desc">
+      Every week's assignment is a building block for the Final Project. 
+      Each lesson is colour-coded to show which phase of the architecture it develops.
+    </p>
+
+    <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:36px;">
+      <span style="display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--muted)">
+        <span style="width:10px;height:10px;border-radius:50%;background:var(--electric);display:inline-block;box-shadow:0 0 8px var(--electric)"></span>Foundation &amp; Strategy
+      </span>
+      <span style="display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--muted)">
+        <span style="width:10px;height:10px;border-radius:50%;background:var(--purple);display:inline-block;box-shadow:0 0 8px var(--purple)"></span>Technology &amp; Data
+      </span>
+      <span style="display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--muted)">
+        <span style="width:10px;height:10px;border-radius:50%;background:var(--orange);display:inline-block;box-shadow:0 0 8px var(--orange)"></span>AI, Risk &amp; Execution
+      </span>
+    </div>
+
+    <div class="timeline">
+
+      <!-- WEEK 1 -->
+      <div class="week-block">
+        <div class="week-card">
+          <div class="week-header">
+            <span class="week-tag">Week 01</span>
+            <span class="week-title">The Vision &amp; Problem of Legacy Systems</span>
+          </div>
+          <div class="week-topic">📋 Topic: Identifying the "Paper Hell" &amp; Siloed Operations</div>
+          <div class="week-concepts">
+            <span class="concept">Business Analysis Fundamentals</span>
+            <span class="concept">Reactive vs Proactive Decisions</span>
+            <span class="concept">Unified Digital Platforms</span>
+          </div>
+          <div class="week-activity"><strong>🔬 Class Activity</strong>Case study analyzing the costs of excessive energy use and unplanned downtime in a paper mill.</div>
+          <div class="week-assign"><strong>📝 Assignment</strong>Choose a traditional, non-digitized business for your final project. Write a 1-page problem statement detailing their current manual processes.</div>
+        </div>
+      </div>
+
+      <!-- WEEK 2 -->
+      <div class="week-block">
+        <div class="week-card">
+          <div class="week-header">
+            <span class="week-tag">Week 02</span>
+            <span class="week-title">The 5-Layer System Architecture</span>
+          </div>
+          <div class="week-topic">🏗️ Topic: How Everything Connects (From Sensors to Dashboards)</div>
+          <div class="week-concepts">
+            <span class="concept">Physical Layer</span>
+            <span class="concept">Data Layer</span>
+            <span class="concept">Integration Layer</span>
+            <span class="concept">Business Logic</span>
+            <span class="concept">AI &amp; Analytics Layer</span>
+          </div>
+          <div class="week-activity"><strong>🔬 Class Activity</strong>Match real-world factory components (like PLCs, databases, and ML models) to their appropriate architectural layer.</div>
+          <div class="week-assign"><strong>📝 Assignment</strong>Draft a high-level 5-layer architecture diagram for your chosen business.</div>
+        </div>
+      </div>
+
+      <!-- WEEK 3 -->
+      <div class="week-block">
+        <div class="week-card">
+          <div class="week-header">
+            <span class="week-tag">Week 03</span>
+            <span class="week-title">Core ERP Components – Supply Chain &amp; Inventory</span>
+          </div>
+          <div class="week-topic">📦 Topic: Digital Inventory &amp; Procurement</div>
+          <div class="week-concepts">
+            <span class="concept">Real-time Stock Levels</span>
+            <span class="concept">Multi-Warehouse Support</span>
+            <span class="concept">Automated PO Creation</span>
+            <span class="concept">3-Way Matching</span>
+          </div>
+          <div class="week-activity"><strong>🔬 Class Activity</strong>Exercise on reducing excess inventory by 15–25% using automated reorder thresholds.</div>
+          <div class="week-assign"><strong>📝 Assignment</strong>Map out the ideal inventory and supply chain workflows needed for your project.</div>
+        </div>
+      </div>
+
+      <!-- WEEK 4 -->
+      <div class="week-block">
+        <div class="week-card">
+          <div class="week-header">
+            <span class="week-tag">Week 04</span>
+            <span class="week-title">MES &amp; Quality Control Operations</span>
+          </div>
+          <div class="week-topic">⚙️ Topic: The "Air Traffic Controller" of the Factory Floor</div>
+          <div class="week-concepts">
+            <span class="concept">OEE (Overall Equipment Effectiveness)</span>
+            <span class="concept">Downtime Tracking</span>
+            <span class="concept">Statistical Process Control (SPC)</span>
+            <span class="concept">Lot Traceability</span>
+          </div>
+          <div class="week-activity"><strong>🔬 Class Activity</strong>Calculate OEE for a hypothetical machine and propose strategies to increase it by 10–20%.</div>
+          <div class="week-assign"><strong>📝 Assignment</strong>Define 3 critical operational metrics (like OEE) for your business project and explain how you will track them.</div>
+        </div>
+      </div>
+
+      <!-- WEEK 5 -->
+      <div class="week-block">
+        <div class="week-card">
+          <div class="week-header">
+            <span class="week-tag">Week 05</span>
+            <span class="week-title">Supporting Systems – Maintenance, HR &amp; Finance</span>
+          </div>
+          <div class="week-topic">🔧 Topic: Connecting the Backbone of the Business</div>
+          <div class="week-concepts">
+            <span class="concept">Preventive vs Predictive Maintenance</span>
+            <span class="concept">Shift Scheduling</span>
+            <span class="concept">Real-time Product Costing (Cost per Ton)</span>
+            <span class="concept">General Ledger Integration</span>
+          </div>
+          <div class="week-activity"><strong>🔬 Class Activity</strong>Map out how the Finance module acts as a hub touching Inventory, MES, HR, and Sales.</div>
+          <div class="week-assign"><strong>📝 Assignment</strong>Outline the cross-departmental data integration points for your project.</div>
+        </div>
+      </div>
+
+      <!-- WEEK 6 -->
+      <div class="week-block">
+        <div class="week-card">
+          <div class="week-header">
+            <span class="week-tag">Week 06</span>
+            <span class="week-title">Data Architecture &amp; Flow</span>
+          </div>
+          <div class="week-topic">🌊 Topic: Moving Data from Machines to the Cloud</div>
+          <div class="week-concepts">
+            <span class="concept">Edge Gateways</span>
+            <span class="concept">MQTT / OPC-UA</span>
+            <span class="concept">Data Lakes</span>
+            <span class="concept">InfluxDB (Time-Series)</span>
+            <span class="concept">PostgreSQL (Relational)</span>
+          </div>
+          <div class="week-activity"><strong>🔬 Class Activity</strong>Map the journey of a single vibration reading from a machine sensor to a predictive maintenance dashboard.</div>
+          <div class="week-assign"><strong>📝 Assignment</strong>Create a data flow diagram for your business project showing data origin to storage.</div>
+        </div>
+      </div>
+
+      <!-- WEEK 7 -->
+      <div class="week-block">
+        <div class="week-card">
+          <div class="week-header">
+            <span class="week-tag">Week 07</span>
+            <span class="week-title">Tech Stack Selection &amp; Open-Source Strategy</span>
+          </div>
+          <div class="week-topic">🛠️ Topic: Build vs. Buy Decisions</div>
+          <div class="week-concepts">
+            <span class="concept">Hybrid Tech Stack Models</span>
+            <span class="concept">Open-Source Savings ($500K–$2M)</span>
+            <span class="concept">Frontend / Backend Frameworks</span>
+          </div>
+          <div class="week-activity"><strong>🔬 Class Activity</strong>Compare building a custom MES on open-source tools versus buying a proprietary SAP/Oracle solution.</div>
+          <div class="week-assign"><strong>📝 Assignment</strong>Recommend and justify a software tech stack for your final project.</div>
+        </div>
+      </div>
+
+      <!-- WEEK 8 -->
+      <div class="week-block">
+        <div class="week-card">
+          <div class="week-header">
+            <span class="week-tag">Week 08</span>
+            <span class="week-title">Database Design &amp; ER Modeling</span>
+          </div>
+          <div class="week-topic">🗃️ Topic: Structuring Enterprise Data</div>
+          <div class="week-concepts">
+            <span class="concept">Relational Design</span>
+            <span class="concept">ITEM Table</span>
+            <span class="concept">MACHINE Table</span>
+            <span class="concept">SENSOR Table</span>
+            <span class="concept">WORK_ORDER Table</span>
+          </div>
+          <div class="week-activity"><strong>🔬 Class Activity</strong>Draw an Entity-Relationship (ER) diagram connecting a WORK_ORDER to an ITEM and a MACHINE.</div>
+          <div class="week-assign"><strong>📝 Assignment</strong>Design an ER model (minimum 5 interconnected tables) for your final project.</div>
+        </div>
+      </div>
+
+      <!-- WEEK 9 -->
+      <div class="week-block">
+        <div class="week-card">
+          <div class="week-header">
+            <span class="week-tag">Week 09</span>
+            <span class="week-title">The AI Layer Part 1 – Predictive Maintenance &amp; Vision AI</span>
+          </div>
+          <div class="week-topic">🤖 Topic: Implementing High-Priority AI Models</div>
+          <div class="week-concepts">
+            <span class="concept">LSTM / XGBoost for Failure Prediction</span>
+            <span class="concept">YOLOv8 / ResNet</span>
+            <span class="concept">Visual Defect Classification</span>
+            <span class="concept">Training Data Requirements</span>
+          </div>
+          <div class="week-activity"><strong>🔬 Class Activity</strong>Analyze the ROI of replacing manual quality checks (70% accuracy) with Vision AI (95%+ accuracy).</div>
+          <div class="week-assign"><strong>📝 Assignment</strong>Propose one predictive AI use case for your project detailing how it works, the data needed, and the expected ROI.</div>
+        </div>
+      </div>
+
+      <!-- WEEK 10 -->
+      <div class="week-block">
+        <div class="week-card">
+          <div class="week-header">
+            <span class="week-tag">Week 10</span>
+            <span class="week-title">The AI Layer Part 2 – Forecasting, Optimisation &amp; RPA</span>
+          </div>
+          <div class="week-topic">📈 Topic: Business Intelligence &amp; Automated Admin</div>
+          <div class="week-concepts">
+            <span class="concept">Demand Forecasting</span>
+            <span class="concept">Reinforcement Learning (Process Optimisation)</span>
+            <span class="concept">RPA for Admin Tasks</span>
+            <span class="concept">30% Labour Cost Reduction</span>
+          </div>
+          <div class="week-activity"><strong>🔬 Class Activity</strong>Case study on using RPA to achieve a 30% labour cost reduction in invoice processing.</div>
+          <div class="week-assign"><strong>📝 Assignment</strong>Identify one manual administrative process in your project to automate using RPA bots.</div>
+        </div>
+      </div>
+
+      <!-- WEEK 11 -->
+      <div class="week-block">
+        <div class="week-card">
+          <div class="week-header">
+            <span class="week-tag">Week 11</span>
+            <span class="week-title">Security Architecture in Industry 4.0</span>
+          </div>
+          <div class="week-topic">🔐 Topic: Protecting the Digital Factory</div>
+          <div class="week-concepts">
+            <span class="concept">Defense-in-Depth</span>
+            <span class="concept">IEC 62443 Standards</span>
+            <span class="concept">IT / OT Network Segmentation</span>
+            <span class="concept">Role-Based Access Control (RBAC)</span>
+          </div>
+          <div class="week-activity"><strong>🔬 Class Activity</strong>Design a secure network topology that isolates factory machines (OT) from office WiFi (IT).</div>
+          <div class="week-assign"><strong>📝 Assignment</strong>Write a brief security policy mitigating the top 3 cyber threats for your project.</div>
+        </div>
+      </div>
+
+      <!-- WEEK 12 -->
+      <div class="week-block">
+        <div class="week-card">
+          <div class="week-header">
+            <span class="week-tag">Week 12</span>
+            <span class="week-title">Project Implementation Roadmap</span>
+          </div>
+          <div class="week-topic">🗺️ Topic: Executing a Phased Digital Transformation</div>
+          <div class="week-concepts">
+            <span class="concept">Phase 1: Pilot (Quick Wins)</span>
+            <span class="concept">Phase 2: Scale (Full Deployment)</span>
+            <span class="concept">Phase 3: Optimize (Advanced AI)</span>
+          </div>
+          <div class="week-activity"><strong>🔬 Class Activity</strong>Plan a 6-week "Discovery &amp; Audit" phase and establish a KPI baseline.</div>
+          <div class="week-assign"><strong>📝 Assignment</strong>Draft a phased implementation roadmap for your business project.</div>
+        </div>
+      </div>
+
+      <!-- WEEK 13 -->
+      <div class="week-block">
+        <div class="week-card">
+          <div class="week-header">
+            <span class="week-tag">Week 13</span>
+            <span class="week-title">Estimating Cost, Effort &amp; ROI</span>
+          </div>
+          <div class="week-topic">💰 Topic: Building the Business Case</div>
+          <div class="week-concepts">
+            <span class="concept">Budgeting Software &amp; Infrastructure</span>
+            <span class="concept">Team Costs</span>
+            <span class="concept">Annual Savings (Energy, Downtime, Scrap)</span>
+            <span class="concept">Payback Period Calculations</span>
+          </div>
+          <div class="week-activity"><strong>🔬 Class Activity</strong>Calculate the payback period for a $2.8M investment that yields $2.8M in annual savings.</div>
+          <div class="week-assign"><strong>📝 Assignment</strong>Estimate a simplified budget and ROI projection for your final project.</div>
+        </div>
+      </div>
+
+      <!-- WEEK 14 -->
+      <div class="week-block">
+        <div class="week-card">
+          <div class="week-header">
+            <span class="week-tag">Week 14</span>
+            <span class="week-title">Risk Analysis &amp; Change Management</span>
+          </div>
+          <div class="week-topic">⚠️ Topic: Why Projects Fail and How to Save Them</div>
+          <div class="week-concepts">
+            <span class="concept">Data Quality Issues</span>
+            <span class="concept">User Resistance</span>
+            <span class="concept">Integration Complexity</span>
+            <span class="concept">Scope Creep</span>
+          </div>
+          <div class="week-activity"><strong>🔬 Class Activity</strong>Create a risk register detailing how to handle factory workers who refuse to stop using paper logs.</div>
+          <div class="week-assign"><strong>📝 Assignment</strong>Identify 3 major implementation risks for your final project and draft a mitigation strategy.</div>
+        </div>
+      </div>
+
+      <!-- WEEK 15 -->
+      <div class="week-block">
+        <div class="week-card" style="border-color:rgba(0,212,255,.4);background:rgba(0,212,255,.04)">
+          <div class="week-header">
+            <span class="week-tag" style="background:rgba(0,212,255,.2);border-color:rgba(0,212,255,.4)">Week 15</span>
+            <span class="week-title">🎓 Final Presentations &amp; Project Reviews</span>
+          </div>
+          <div class="week-topic" style="color:var(--electric)">🎤 Topic: Communicating the Blueprint</div>
+          <div class="week-concepts">
+            <span class="concept">Executive Pitching</span>
+            <span class="concept">Technical to Business Value Translation</span>
+          </div>
+          <div class="week-activity"><strong>🔬 Class Activity</strong>Live class presentations and peer feedback.</div>
+          <div class="week-assign" style="border-left-color:var(--electric);background:rgba(0,212,255,.07);color:#b8e8ff"><strong>📝 Final Submission</strong>Submit all Final Deliverables (5 portfolio documents — see Final Deliverables section below).</div>
+        </div>
+      </div>
+
+    </div><!-- end timeline -->
+  </div>
+</section>
+<div class="hr"></div>
+
+<!-- ═══════════════════════════════ ROADMAP ═══════════════════════════════ -->
+<section class="section" id="roadmap">
+  <div class="wrapper">
+    <div class="section-label">05 — Implementation Framework</div>
+    <h2 class="section-title">The 3-Phase <span>Implementation Roadmap</span></h2>
+    <p class="section-desc">
+      A successful digital transformation is never done all at once. 
+      The course teaches a proven three-phase approach that manages risk and delivers quick wins 
+      while building toward a fully optimised, AI-driven enterprise.
+    </p>
+
+    <!-- Roadmap Flow Diagram -->
+    <div class="flow-wrap" style="margin-bottom:36px;">
+      <svg class="flow-svg" viewBox="0 0 860 200" xmlns="http://www.w3.org/2000/svg" font-family="'DM Sans',sans-serif">
+        <defs>
+          <marker id="fwArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0,10 3.5,0 7" fill="#8a9bbf" opacity=".7"/>
+          </marker>
+        </defs>
+
+        <!-- Phase 1 -->
+        <rect x="20" y="40" width="220" height="120" rx="12" fill="rgba(0,212,255,.08)" stroke="#00d4ff" stroke-width="1.5" stroke-opacity=".5"/>
+        <text x="130" y="68" fill="#00d4ff" font-size="10" font-family="'JetBrains Mono',monospace" letter-spacing="2" text-anchor="middle" opacity=".8">PHASE 1</text>
+        <text x="130" y="90" fill="#fff" font-size="14" font-weight="700" text-anchor="middle">Pilot</text>
+        <text x="130" y="108" fill="#8a9bbf" font-size="10" text-anchor="middle">Weeks 1–12 concept</text>
+        <text x="130" y="124" fill="#8ed6e8" font-size="10" text-anchor="middle">Quick Wins · KPI Baseline</text>
+        <text x="130" y="140" fill="#8ed6e8" font-size="10" text-anchor="middle">Proof of Concept Build</text>
+        <text x="130" y="156" fill="#8ed6e8" font-size="10" text-anchor="middle">Discovery &amp; Audit</text>
+
+        <!-- Arrow 1→2 -->
+        <line x1="240" y1="100" x2="300" y2="100" stroke="#8a9bbf" stroke-width="2" stroke-opacity=".6" marker-end="url(#fwArrow)"/>
+        <text x="270" y="92" fill="#8a9bbf" font-size="9" text-anchor="middle" font-family="'JetBrains Mono',monospace">SCALE UP</text>
+
+        <!-- Phase 2 -->
+        <rect x="300" y="40" width="230" height="120" rx="12" fill="rgba(179,136,255,.08)" stroke="#b388ff" stroke-width="1.5" stroke-opacity=".5"/>
+        <text x="415" y="68" fill="#b388ff" font-size="10" font-family="'JetBrains Mono',monospace" letter-spacing="2" text-anchor="middle" opacity=".8">PHASE 2</text>
+        <text x="415" y="90" fill="#fff" font-size="14" font-weight="700" text-anchor="middle">Scale</text>
+        <text x="415" y="108" fill="#8a9bbf" font-size="10" text-anchor="middle">Full ERP + MES Deployment</text>
+        <text x="415" y="124" fill="#c9b8f0" font-size="10" text-anchor="middle">All Departments Connected</text>
+        <text x="415" y="140" fill="#c9b8f0" font-size="10" text-anchor="middle">Live Data Pipelines</text>
+        <text x="415" y="156" fill="#c9b8f0" font-size="10" text-anchor="middle">Staff Training &amp; Change Mgmt</text>
+
+        <!-- Arrow 2→3 -->
+        <line x1="530" y1="100" x2="590" y2="100" stroke="#8a9bbf" stroke-width="2" stroke-opacity=".6" marker-end="url(#fwArrow)"/>
+        <text x="560" y="92" fill="#8a9bbf" font-size="9" text-anchor="middle" font-family="'JetBrains Mono',monospace">OPTIMIZE</text>
+
+        <!-- Phase 3 -->
+        <rect x="590" y="40" width="238" height="120" rx="12" fill="rgba(0,255,163,.08)" stroke="#00ffa3" stroke-width="1.5" stroke-opacity=".5"/>
+        <text x="709" y="68" fill="#00ffa3" font-size="10" font-family="'JetBrains Mono',monospace" letter-spacing="2" text-anchor="middle" opacity=".8">PHASE 3</text>
+        <text x="709" y="90" fill="#fff" font-size="14" font-weight="700" text-anchor="middle">Optimize</text>
+        <text x="709" y="108" fill="#8a9bbf" font-size="10" text-anchor="middle">Advanced AI Capabilities</text>
+        <text x="709" y="124" fill="#a0f5d8" font-size="10" text-anchor="middle">Predictive Maintenance Live</text>
+        <text x="709" y="140" fill="#a0f5d8" font-size="10" text-anchor="middle">Vision AI Quality Control</text>
+        <text x="709" y="156" fill="#a0f5d8" font-size="10" text-anchor="middle">Continuous ROI Monitoring</text>
+      </svg>
+    </div>
+
+    <div class="phases">
+      <div class="phase">
+        <div class="phase-label">Phase 01 — Pilot</div>
+        <h3>Quick Wins</h3>
+        <ul>
+          <li>6-week Discovery &amp; Audit</li>
+          <li>Establish KPI baseline</li>
+          <li>Deploy core ERP modules</li>
+          <li>Initial data capture from machines</li>
+          <li>Proof-of-concept build for one process</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <div class="phase-label">Phase 02 — Scale</div>
+        <h3>Full Deployment</h3>
+        <ul>
+          <li>Full ERP &amp; MES go-live</li>
+          <li>All departments connected</li>
+          <li>Live MQTT/OPC-UA data pipelines</li>
+          <li>Staff training &amp; change management</li>
+          <li>Real-time dashboards for leadership</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <div class="phase-label">Phase 03 — Optimize</div>
+        <h3>Advanced AI</h3>
+        <ul>
+          <li>Predictive Maintenance models live</li>
+          <li>Vision AI Quality Control active</li>
+          <li>RPA bots handling admin tasks</li>
+          <li>Demand forecasting operational</li>
+          <li>Continuous ROI measurement</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="hr"></div>
+
+<!-- ═══════════════════════════════ FINAL PROJECT ═════════════════════════ -->
+<section class="section" id="final-project">
+  <div class="wrapper">
+    <div class="section-label">06 — Capstone</div>
+    <h2 class="section-title">Final <span>Project</span> Instructions</h2>
+    <p class="section-desc">
+      Acting as a <strong style="color:#fff">Lead Business Analyst</strong>, you will analyze a traditional business and 
+      propose a comprehensive digital transformation and AI roadmap. This is your portfolio centrepiece.
+    </p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:36px;" class="two-col">
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px;">
+        <div style="font-size:.72rem;font-family:'JetBrains Mono',monospace;color:var(--electric);letter-spacing:.15em;text-transform:uppercase;margin-bottom:14px;">What You Will Analyse</div>
+        <p style="font-size:.9rem;color:var(--muted);margin-bottom:16px;">A legacy business heavily reliant on manual processes, disconnected data silos, and reactive decision-making.</p>
+        <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:8px;">
+          <li style="font-size:.88rem;color:var(--muted);display:flex;gap:10px;align-items:flex-start;"><span style="color:var(--electric)">→</span> Where is data manually entered or duplicated?</li>
+          <li style="font-size:.88rem;color:var(--muted);display:flex;gap:10px;align-items:flex-start;"><span style="color:var(--electric)">→</span> What are the root causes of unplanned downtime and waste?</li>
+          <li style="font-size:.88rem;color:var(--muted);display:flex;gap:10px;align-items:flex-start;"><span style="color:var(--electric)">→</span> How is inventory currently tracked, and what does stockout cost the business?</li>
+          <li style="font-size:.88rem;color:var(--muted);display:flex;gap:10px;align-items:flex-start;"><span style="color:var(--electric)">→</span> What manual tasks are ripe for RPA automation?</li>
+        </ul>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px;">
+        <div style="font-size:.72rem;font-family:'JetBrains Mono',monospace;color:var(--orange);letter-spacing:.15em;text-transform:uppercase;margin-bottom:14px;">Frameworks &amp; Tools to Use</div>
+        <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:12px;">
+          <li style="display:flex;gap:12px;align-items:flex-start;">
+            <span style="background:rgba(0,212,255,.15);border:1px solid rgba(0,212,255,.3);color:var(--electric);font-size:.72rem;font-family:'JetBrains Mono',monospace;padding:3px 8px;border-radius:6px;flex-shrink:0">F1</span>
+            <span style="font-size:.88rem;color:var(--muted)">The 5-Layer System Architecture</span>
+          </li>
+          <li style="display:flex;gap:12px;align-items:flex-start;">
+            <span style="background:rgba(179,136,255,.15);border:1px solid rgba(179,136,255,.3);color:var(--purple);font-size:.72rem;font-family:'JetBrains Mono',monospace;padding:3px 8px;border-radius:6px;flex-shrink:0">F2</span>
+            <span style="font-size:.88rem;color:var(--muted)">Entity-Relationship (ER) Modeling</span>
+          </li>
+          <li style="display:flex;gap:12px;align-items:flex-start;">
+            <span style="background:rgba(255,107,53,.15);border:1px solid rgba(255,107,53,.3);color:var(--orange);font-size:.72rem;font-family:'JetBrains Mono',monospace;padding:3px 8px;border-radius:6px;flex-shrink:0">F3</span>
+            <span style="font-size:.88rem;color:var(--muted)">The 3-Phase Implementation Roadmap</span>
+          </li>
+          <li style="display:flex;gap:12px;align-items:flex-start;">
+            <span style="background:rgba(0,255,163,.15);border:1px solid rgba(0,255,163,.3);color:var(--green);font-size:.72rem;font-family:'JetBrains Mono',monospace;padding:3px 8px;border-radius:6px;flex-shrink:0">F4</span>
+            <span style="font-size:.88rem;color:var(--muted)">ROI / Payback Calculations</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.2);border-radius:14px;padding:28px;">
+      <div style="font-size:.72rem;font-family:'JetBrains Mono',monospace;color:var(--electric);letter-spacing:.15em;text-transform:uppercase;margin-bottom:16px;">Your Presentation Must Include</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <span style="font-size:1.4rem">📊</span>
+          <p style="font-size:.88rem;color:var(--muted)">A compelling "Before vs. After" comparison showing real operational impact</p>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <span style="font-size:1.4rem">🏗️</span>
+          <p style="font-size:.88rem;color:var(--muted)">A clear technical stack recommendation justified with evidence</p>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <span style="font-size:1.4rem">🤖</span>
+          <p style="font-size:.88rem;color:var(--muted)">High-priority AI use cases with ROI projections</p>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <span style="font-size:1.4rem">🛡️</span>
+          <p style="font-size:.88rem;color:var(--muted)">A realistic mitigation strategy for user resistance to change</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<div class="hr"></div>
+
+<!-- ═══════════════════════════════ DELIVERABLES ══════════════════════════ -->
+<section class="section" id="deliverables">
+  <div class="wrapper">
+    <div class="section-label">07 — Portfolio Submission</div>
+    <h2 class="section-title">5 <span>Final Deliverables</span></h2>
+    <p class="section-desc">
+      At the end of Week 15, students must submit the following complete portfolio. 
+      Together these five documents tell the full story of your digital transformation proposal.
+    </p>
+    <div class="deliverables">
+      <div class="dlv">
+        <div>
+          <div class="dlv-num">01</div>
+          <h4>Short Business Analysis Report</h4>
+          <p>Detailing the core problems, outdated metrics, and the proposed digital solution for your chosen legacy business.</p>
+        </div>
+      </div>
+      <div class="dlv">
+        <div>
+          <div class="dlv-num" style="color:var(--purple)">02</div>
+          <h4>Current-State &amp; Future-State System Map</h4>
+          <p>Visualizing the transition from paper/siloed software to the 5-layer integrated architecture.</p>
+        </div>
+      </div>
+      <div class="dlv">
+        <div>
+          <div class="dlv-num" style="color:var(--orange)">03</div>
+          <h4>AI / Digital Transformation Roadmap</h4>
+          <p>A phased timeline (Pilot, Scale, Optimize) showing when specific modules and AI capabilities will go live.</p>
+        </div>
+      </div>
+      <div class="dlv">
+        <div>
+          <div class="dlv-num" style="color:var(--green)">04</div>
+          <h4>Basic Workflow or Prototype</h4>
+          <p>An ER database diagram alongside a proposed data flow for one critical process (e.g., automated inventory reordering).</p>
+        </div>
+      </div>
+      <div class="dlv">
+        <div>
+          <div class="dlv-num" style="color:var(--yellow)">05</div>
+          <h4>Final Presentation Deck</h4>
+          <p>An executive-ready slide deck summarizing the project's costs, projected ROI, risks, and ultimate business value.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="hr"></div>
+
+<!-- ═══════════════════════════════ IMPACT ════════════════════════════════ -->
+<section class="section impact-section" id="impact">
+  <div class="wrapper">
+    <div class="section-label">08 — Transformation Impact</div>
+    <h2 class="section-title">From <span>Paper Hell</span> to <span style="color:var(--green)">Digital Excellence</span></h2>
+    <p class="section-desc">
+      This is the ultimate purpose of everything you learn in this course — 
+      a complete, measurable transformation of a traditional paper manufacturing company 
+      into an agile, data-driven, AI-powered enterprise.
+    </p>
+
+    <!-- Before / After -->
+    <div class="before-after">
+      <div class="ba-col before">
+        <div class="ba-label">❌ Before — Traditional State</div>
+        <h3 style="color:#ff8080">Paper-Based Operations</h3>
+        <div class="ba-item"><span class="icon">📄</span><span>Manual paper logs for every production run, shift, and quality check — prone to error and loss</span></div>
+        <div class="ba-item"><span class="icon">📊</span><span>Siloed spreadsheets per department with no shared data — Finance does not know what Production knows</span></div>
+        <div class="ba-item"><span class="icon">🔧</span><span>Reactive maintenance: machines break down before anyone notices — causing costly unplanned downtime</span></div>
+        <div class="ba-item"><span class="icon">📦</span><span>Inventory managed by gut-feel — leading to either stockouts that halt production or excess stock that ties up capital</span></div>
+        <div class="ba-item"><span class="icon">👁️</span><span>Manual quality inspection at ~70% accuracy — defective products slip through to customers</span></div>
+        <div class="ba-item"><span class="icon">💡</span><span>Energy use unmonitored — running machines at full power even during idle periods wastes thousands per month</span></div>
+        <div class="ba-item"><span class="icon">⏳</span><span>Decisions made on last-week's data or verbal reports — leadership always reacting, never anticipating</span></div>
+        <div class="ba-item"><span class="icon">📋</span><span>Invoice processing, PO creation, and HR scheduling done manually — consuming hours of valuable human time daily</span></div>
+      </div>
+      <div class="ba-divider"><div class="ba-vs">VS</div></div>
+      <div class="ba-col after">
+        <div class="ba-label">✅ After — Industry 4.0 State</div>
+        <h3 style="color:var(--green)">Unified AI-Powered Enterprise</h3>
+        <div class="ba-item"><span class="icon">📡</span><span>Real-time sensor data captured automatically from every machine via MQTT/OPC-UA — zero manual entry</span></div>
+        <div class="ba-item"><span class="icon">🔗</span><span>Fully integrated ERP connects Finance, HR, Inventory, Production, and Sales in one unified platform</span></div>
+        <div class="ba-item"><span class="icon">🤖</span><span>Predictive Maintenance AI (LSTM/XGBoost) detects failure patterns weeks in advance — scheduling maintenance proactively</span></div>
+        <div class="ba-item"><span class="icon">📦</span><span>Automated reorder thresholds keep stock levels optimal — reducing excess inventory by 15–25% and eliminating stockouts</span></div>
+        <div class="ba-item"><span class="icon">🔬</span><span>Vision AI (YOLOv8/ResNet) inspects every product at 95%+ accuracy — defects caught at source, not at the customer</span></div>
+        <div class="ba-item"><span class="icon">⚡</span><span>Real-time energy monitoring dashboards identify waste instantly — cutting energy costs by 10–20%</span></div>
+        <div class="ba-item"><span class="icon">📊</span><span>Live BI dashboards give leadership up-to-the-minute KPIs — decisions driven by data, not intuition</span></div>
+        <div class="ba-item"><span class="icon">🤖</span><span>RPA bots handle invoice processing, PO creation, and scheduling — freeing staff for higher-value work, 30% labour saving</span></div>
+      </div>
+    </div>
+
+    <!-- Key Metrics -->
+    <h3 style="font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:24px;margin-top:48px;">📈 Projected Performance Improvements</h3>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-val">↓25%</div>
+        <div class="metric-label">Excess Inventory Reduction</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">↑20%</div>
+        <div class="metric-label">OEE Improvement</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">95%+</div>
+        <div class="metric-label">Quality Inspection Accuracy</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">↓30%</div>
+        <div class="metric-label">Admin Labour Cost Savings</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">↓20%</div>
+        <div class="metric-label">Energy Cost Reduction</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">$2M+</div>
+        <div class="metric-label">Open-Source Licence Savings</div>
+      </div>
+    </div>
+
+    <!-- Bar Chart: Before vs After -->
+    <div class="chart-wrap">
+      <div class="chart-title">Operational Performance: Before vs. After Digital Transformation</div>
+      <div class="legend">
+        <div class="leg-item"><div class="leg-dot" style="background:rgba(255,80,80,.7)"></div>Before (Legacy)</div>
+        <div class="leg-item"><div class="leg-dot" style="background:var(--electric)"></div>After (Industry 4.0)</div>
+      </div>
+      <div class="bar-chart" style="gap:24px;">
+        <!-- Equipment Effectiveness -->
+        <div class="bar-group">
+          <div class="bar-pair">
+            <div class="bar old" style="height:96px" title="Before: 60% OEE"></div>
+            <div class="bar new" style="height:128px" title="After: 80% OEE"></div>
+          </div>
+          <div class="bar-lbl">Equipment<br/>Effectiveness</div>
+        </div>
+        <!-- Quality Accuracy -->
+        <div class="bar-group">
+          <div class="bar-pair">
+            <div class="bar old" style="height:112px"></div>
+            <div class="bar new" style="height:152px"></div>
+          </div>
+          <div class="bar-lbl">Quality<br/>Accuracy</div>
+        </div>
+        <!-- Inventory Turnover -->
+        <div class="bar-group">
+          <div class="bar-pair">
+            <div class="bar old" style="height:80px"></div>
+            <div class="bar new" style="height:128px"></div>
+          </div>
+          <div class="bar-lbl">Inventory<br/>Turnover</div>
+        </div>
+        <!-- Decision Speed -->
+        <div class="bar-group">
+          <div class="bar-pair">
+            <div class="bar old" style="height:40px"></div>
+            <div class="bar new" style="height:150px"></div>
+          </div>
+          <div class="bar-lbl">Decision<br/>Speed</div>
+        </div>
+        <!-- Maintenance Efficiency -->
+        <div class="bar-group">
+          <div class="bar-pair">
+            <div class="bar old" style="height:72px"></div>
+            <div class="bar new" style="height:140px"></div>
+          </div>
+          <div class="bar-lbl">Maintenance<br/>Efficiency</div>
+        </div>
+        <!-- Admin Automation -->
+        <div class="bar-group">
+          <div class="bar-pair">
+            <div class="bar old" style="height:56px"></div>
+            <div class="bar new" style="height:144px"></div>
+          </div>
+          <div class="bar-lbl">Admin<br/>Automation</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Final Impact Statement -->
+    <div style="margin-top:48px;background:var(--card);border:1px solid rgba(0,212,255,.25);border-radius:16px;padding:40px;text-align:center;">
+      <div style="font-size:2.5rem;margin-bottom:16px">🚀</div>
+      <h3 style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:#fff;margin-bottom:16px;line-height:1.2;">
+        The Most Critical Lesson of This Entire Course
+      </h3>
+      <p style="font-size:1.05rem;color:var(--muted);max-width:680px;margin:0 auto 24px;">
+        Technology alone cannot transform a company. The machines, sensors, databases, and AI 
+        models are merely tools. The real transformation happens when the people inside the 
+        organization embrace new ways of working.
+      </p>
+      <div style="display:inline-block;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.3);border-radius:12px;padding:16px 32px;">
+        <p style="font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;color:var(--electric);margin:0;">
+          "People and processes matter more than software."
+        </p>
+      </div>
+      <p style="font-size:.9rem;color:var(--muted);margin-top:24px;max-width:600px;margin-left:auto;margin-right:auto;">
+        A factory worker who trusts the new system and abandons their paper log is worth more than 
+        any AI model. Change management, training, and earning stakeholder buy-in are just as 
+        important as designing the perfect data architecture — and this course prepares you for both.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ FOOTER ════════════════════════════════ -->
+<footer class="footer">
+  <p>
+    <strong>Industry 4.0 Mastery: The Industrial AI &amp; ERP Blueprint</strong><br/>
+    Course Documentation — 15-Week Programme<br/>
+    <span style="opacity:.5;font-size:.8rem;margin-top:8px;display:block">
+      All content sourced directly from the official course syllabus. 
+      Diagrams and visualizations created for educational clarity.
+    </span>
+  </p>
+</footer>
+
+<style>
+  @media(max-width:700px){
+    .two-col{grid-template-columns:1fr !important;}
+    .bar-chart{gap:10px;}
+    .bar{width:20px;}
+  }
+</style>
+</body>
+</html>
